@@ -8,7 +8,7 @@ public interface WishDAO {
 
     WishList selectWish(Long id);
 
-    WishList updateWishContent(Long id, String wishContent) throws Exception;
+    WishList updateWishContent(Long id, String wishContent, int price) throws Exception;
 
     void deleteWish(Long id) throws Exception;
 

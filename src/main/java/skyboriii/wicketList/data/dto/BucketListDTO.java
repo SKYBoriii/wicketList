@@ -9,12 +9,20 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BucketListDTO {
 
-    private String bucketWriter;
+    private Long id;
+    private String bucketGoal;
     private String bucketContent;
 
 
-    public BucketListDTO(String bucketWriter, String bucketContent) {
-        this.bucketWriter = bucketWriter;
+
+    private String completedAt;  // yyyy/mm/dd
+
+    public BucketListDTO(Long id, String bucketGoal, String bucketContent, String bucketCompletAt) {
+        this.id = id;
+        this.bucketGoal = bucketGoal;
         this.bucketContent = bucketContent;
+        this.completedAt = bucketCompletAt;
     }
+
+
 }

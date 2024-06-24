@@ -5,8 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skyboriii.wicketList.data.dto.ChangeWishListContentDTO;
-import skyboriii.wicketList.data.dto.WIshListDTO;
-import skyboriii.wicketList.data.dto.WishListResponseDTO;
+import skyboriii.wicketList.data.dto.WishListDTO;
 import skyboriii.wicketList.service.WIshListService;
 
 @RestController
@@ -21,27 +20,30 @@ public class WishController {
     }
 
     @GetMapping()
-    public ResponseEntity<WishListResponseDTO> getWishList(@RequestParam Long id){
-        WishListResponseDTO wishListResponseDTO = wishListService.getWishList(id);
+    public ResponseEntity<WishListDTO> getWishList(@RequestParam Long id){
+        WishListDTO wishListDTO = wishListService.getWishList(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(wishListResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(wishListDTO);
     }
 
     @PostMapping()
-    public ResponseEntity<WishListResponseDTO> createWishList (@RequestBody WIshListDTO wIshListDTO) {
-        WishListResponseDTO wishListResponseDTO = wishListService.saveWishList(wIshListDTO);
+    public ResponseEntity<WishListDTO> createWishList (@RequestBody WishListDTO wishListDto) {
+        WishListDTO wishListDTO = wishListService.saveWishList(wishListDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(wishListResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(wishListDTO);
     }
 
     @PutMapping()
-    public ResponseEntity<WishListResponseDTO> changeWishListName(
+    public ResponseEntity<WishListDTO> changeWishListName(
             @RequestBody ChangeWishListContentDTO changeWishListContentDTO) throws Exception {
-        WishListResponseDTO wishListResponseDTO = wishListService.changeWishListContent(
+        WishListDTO wishListDTO = wishListService.changeWishListItem(
                 changeWishListContentDTO.getId(),
-                changeWishListContentDTO.getWishContent());
+                changeWishListContentDTO.getWishItem(),
+                changeWishListContentDTO.getWishPrice()
 
-        return ResponseEntity.status(HttpStatus.OK).body(wishListResponseDTO);
+                );
+
+        return ResponseEntity.status(HttpStatus.OK).body(wishListDTO);
     }
 
     @DeleteMapping()

@@ -39,7 +39,7 @@ public class WishDAOImpl implements WishDAO {
     // 업데이트를 할 때에는 영속성 컨테스트를 활용해 값을 갱신하는데, find() 메서드로 호출하면
     // 가져온 객체가 영속성 컨테스트에 추가됩니다.
     @Override
-    public WishList updateWishContent(Long id, String wishContent)
+    public WishList updateWishContent(Long id, String wishItem, int price)
             throws Exception {
         Optional<WishList> selectedWishList = wishListRepository.findById(id);
 
@@ -48,8 +48,8 @@ public class WishDAOImpl implements WishDAO {
         if (selectedWishList.isPresent()) {
             WishList wishList = selectedWishList.get();
 
-            wishList.setWishContent(wishContent);
-            wishList.setWishUpdatedAt(LocalDateTime.now());
+            wishList.setWishItem(wishItem);
+            wishList.setWishPrice(price);
 
             updateWishList = wishListRepository.save(wishList);
         }

@@ -3,11 +3,15 @@ package skyboriii.wicketList.service.impl;
 import org.springframework.stereotype.Service;
 import skyboriii.wicketList.data.dao.BucketDAO;
 import skyboriii.wicketList.data.dto.BucketListDTO;
-import skyboriii.wicketList.data.dto.BucketListResponseDTO;
 import skyboriii.wicketList.entity.BucketList;
 import skyboriii.wicketList.service.BucketListService;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Service
 public class BucketListServiceImpl implements BucketListService {
@@ -19,50 +23,62 @@ public class BucketListServiceImpl implements BucketListService {
     }
 
     @Override
-    public BucketListResponseDTO getBucketList(Long id) {
+    public BucketListDTO getBucketList(Long id) {
         BucketList bucketList = bucketDAO.selectBucket(id);
 
-        BucketListResponseDTO bucketListResponseDTO = new BucketListResponseDTO();
+        BucketListDTO bucketListDTO = new BucketListDTO();
 
-        bucketListResponseDTO.setId(bucketList.getBucketId());
-        bucketListResponseDTO.setBucketWriter(bucketList.getBucketWriter());
-        bucketListResponseDTO.setBucketContent(bucketList.getBucketContent());
+        bucketListDTO.setId(bucketList.getBucketId());
+        bucketListDTO.setBucketGoal(bucketList.getBucketGoal());
+        bucketListDTO.setBucketContent(bucketList.getBucketContent());
 
-        return bucketListResponseDTO;
+        return bucketListDTO;
     }
 
     @Override
-    public BucketListResponseDTO saveBucketList(BucketListDTO bucketListDTO) {
+    public BucketListDTO saveBucketList(BucketListDTO bucketListDTO) {
         BucketList bucketList = new BucketList();
         bucketList.setBucketContent(bucketListDTO.getBucketContent());
-        bucketList.setBucketWriter(bucketListDTO.getBucketWriter());
-        bucketList.setBuketCreatedAt(LocalDateTime.now());
-        bucketList.setBuketUpdatedAt(LocalDateTime.now());
+        bucketList.setBucketGoal(bucketListDTO.getBucketGoal());
 
         BucketList saveBucketList = bucketDAO.insertBucket(bucketList);
 
-        BucketListResponseDTO bucketListResponseDTO = new BucketListResponseDTO();
+        BucketListDTO bucketListResponseDTO = new BucketListDTO();
 
         bucketListResponseDTO.setBucketContent(saveBucketList.getBucketContent());
-        bucketListResponseDTO.setBucketWriter(saveBucketList.getBucketWriter());
+        bucketListResponseDTO.setBucketGoal(saveBucketList.getBucketGoal());
 
         return bucketListResponseDTO;
     }
 
     @Override
-    public BucketListResponseDTO changeBucketListContent(Long id, String content) throws Exception {
-        BucketList changeBucketList = bucketDAO.updateBucketContent(id, content);
+    public BucketListDTO changeBucketListContent(Long id, String content, String goal, String completedAt) throws Exception {
+        BucketList changeBucketList = bucketDAO.updateBucketContent(id, content, goal, completedAt);
 
-        BucketListResponseDTO bucketListResponseDTO = new BucketListResponseDTO();
+        BucketListDTO bucketListDTO = new BucketListDTO();
 
-        bucketListResponseDTO.setBucketContent(changeBucketList.getBucketContent());
-        bucketListResponseDTO.setBucketWriter(changeBucketList.getBucketWriter());
+        bucketListDTO.setBucketContent(changeBucketList.getBucketContent());
+        bucketListDTO.setBucketGoal(changeBucketList.getBucketGoal());
 
-        return bucketListResponseDTO;
+        return bucketListDTO;
+    }
+
+    @Override
+    public BucketListDTO completedBucketAt(Long id, String completedAt) throws Exception {
+        BucketList bucketList = bucketDAO.updateCompletedAt(id,completedAt);
+        BucketListDTO bucketListDTO = new BucketListDTO();
+        bucketListDTO.setId(bucketList.getBucketId());
+        bucketListDTO.setCompletedAt(bucketList.getCompletedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+        bucketListDTO.setBucketContent(bucketList.getBucketContent());
+        bucketListDTO.setBucketGoal(bucketList.getBucketGoal());
+
+        return bucketListDTO;
     }
 
     @Override
     public void deleteBucketList(Long id) throws Exception {
         bucketDAO.deleteBucket(id);
     }
+
+
 }

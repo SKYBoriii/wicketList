@@ -1,15 +1,14 @@
 package skyboriii.wicketList.service;
 
-import skyboriii.wicketList.data.dto.WIshListDTO;
-import skyboriii.wicketList.data.dto.WishListResponseDTO;
+import skyboriii.wicketList.data.dto.WishListDTO;
 
 public interface WIshListService {
 
-    WishListResponseDTO getWishList(Long id);
+    WishListDTO getWishList(Long id);
 
-    WishListResponseDTO saveWishList(WIshListDTO wIshListDTO);
+    WishListDTO saveWishList(WishListDTO wishListDTO);
 
-    WishListResponseDTO changeWishListContent(Long id, String content) throws Exception;
+    WishListDTO changeWishListItem(Long id, String item, int price) throws Exception;
 
     void deleteWishList(Long id) throws Exception;
 }

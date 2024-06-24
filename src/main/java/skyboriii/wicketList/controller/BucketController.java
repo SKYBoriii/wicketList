@@ -5,12 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skyboriii.wicketList.data.dto.BucketListDTO;
-import skyboriii.wicketList.data.dto.BucketListResponseDTO;
 import skyboriii.wicketList.data.dto.ChangeBucketListContentDTO;
 import skyboriii.wicketList.service.BucketListService;
 
 @RestController
-@RequestMapping("/buk")
+@RequestMapping("/bucket")
 public class BucketController {
 
     private final BucketListService bucketListService;
@@ -21,30 +20,33 @@ public class BucketController {
     }
 
     @GetMapping()
-    public ResponseEntity<BucketListResponseDTO> getBucket(Long id) {
-        BucketListResponseDTO bucketListResponseDTO = bucketListService.getBucketList(id);
+    public ResponseEntity<BucketListDTO> getBucket(Long id) {
+        BucketListDTO bucketListDTO = bucketListService.getBucketList(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(bucketListResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(bucketListDTO);
     }
 
     @PostMapping()
-    public ResponseEntity<BucketListResponseDTO>
+    public ResponseEntity<BucketListDTO>
             createBucketList(@RequestBody BucketListDTO bucketListDTO){
-        BucketListResponseDTO bucketListResponseDTO = bucketListService.saveBucketList(bucketListDTO);
+        BucketListDTO bucketListResponseDTO = bucketListService.saveBucketList(bucketListDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(bucketListResponseDTO);
     }
 
     @PutMapping
-    public ResponseEntity<BucketListResponseDTO> changeBucketlistContent(
-            @RequestBody ChangeBucketListContentDTO changeBucketListContentDTO) throws Exception {
-        BucketListResponseDTO bucketListResponseDTO = bucketListService.changeBucketListContent(
+    public ResponseEntity<BucketListDTO> changeBucketlistContent(
+            @RequestBody BucketListDTO changeBucketListContentDTO) throws Exception {
+        BucketListDTO bucketListDTO = bucketListService.changeBucketListContent(
 
                 changeBucketListContentDTO.getId(),
-                changeBucketListContentDTO.getBucketContent()
+                changeBucketListContentDTO.getBucketContent(),
+                changeBucketListContentDTO.getBucketGoal(),
+                changeBucketListContentDTO.getCompletedAt()
+
         );
 
-        return ResponseEntity.status(HttpStatus.OK).body(bucketListResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(bucketListDTO);
     }
 
     @DeleteMapping

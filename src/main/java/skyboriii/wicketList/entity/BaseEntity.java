@@ -15,13 +15,14 @@ import java.time.LocalDateTime;
 @Getter
 abstract class BaseEntity {
 
+    // db 가 알아서 인서트 해줌
     @CreatedDate
     @Column(name = "regdate", updatable = false)
     private LocalDateTime regDate;
 
+    // 자동으로 알아서 업데이트 해줌
     @LastModifiedDate
     @Column(name ="moddate" )
     private LocalDateTime modDate;
 
 }
-

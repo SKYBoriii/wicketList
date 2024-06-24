@@ -1,15 +1,21 @@
 package skyboriii.wicketList.service;
 
 import skyboriii.wicketList.data.dto.BucketListDTO;
-import skyboriii.wicketList.data.dto.BucketListResponseDTO;
 
 public interface BucketListService {
 
-    BucketListResponseDTO getBucketList(Long id);
+    // 호출
+    BucketListDTO getBucketList(Long id);
 
-    BucketListResponseDTO saveBucketList(BucketListDTO bucketListDTO);
+    // 저장
+    BucketListDTO saveBucketList(BucketListDTO bucketListDTO);
 
-    BucketListResponseDTO changeBucketListContent(Long id, String content) throws Exception;
+    // 변경
+    BucketListDTO changeBucketListContent(Long id, String content, String goal, String completedAt) throws Exception;
 
+    BucketListDTO completedBucketAt(Long id, String completedAt) throws Exception;
+
+    // 삭제
     void deleteBucketList(Long id) throws Exception;
+
 }
