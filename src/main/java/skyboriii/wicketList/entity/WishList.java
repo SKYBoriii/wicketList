@@ -20,7 +20,7 @@ public class WishList extends BaseEntity{
     private int wishPrice;
 
     // 글 내용
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     private String wishItem;
 
 

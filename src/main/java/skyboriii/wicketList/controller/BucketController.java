@@ -5,11 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skyboriii.wicketList.data.dto.BucketListDTO;
-import skyboriii.wicketList.data.dto.ChangeBucketListContentDTO;
+
 import skyboriii.wicketList.service.BucketListService;
 
 @RestController
-@RequestMapping("/bucket")
+@RequestMapping("/buk")
 public class BucketController {
 
     private final BucketListService bucketListService;

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+
+    //버킷리스트 보여주기
+    $(document).ready(function () {
+        show_bucket();
+    });
+    function show_wish() {
+        // '#bucket-list' 요소를 비운다
+        $('#wish-list').empty();
+
+        // AJAX 요청을 시작한다
+        $.ajax({
+            type: "GET", // GET 요청을 보낸다
+            url: "/buk/:item_id", // 요청을 보낼 URL<< 버킷리스트 항목 조회 url임 >>
+            data: {}, // 요청에 추가할 데이터 (여기서는 비어 있음)
+
+            // 요청이 성공적으로 완료되면 실행되는 함수
+            success: function(response) {
+                // 응답에서 'buckets' 데이터를 가져온다
+                let rows = response['wishes'];
+
+                // 각 버킷 리스트 아이템을 반복 처리한다
+                for (let i = 0; i < rows.length; i++) {
+                    let bucket = rows[i]['wish']; // 버킷 리스트 아이템의 이름
+                    let num = rows[i]['num']; // 버킷 리스트 아이템의 고유 번호
+                    let done = rows[i]['done']; // 버킷 리스트 아이템의 완료 상태 (0: 미완료, 1: 완료)
+
+                    let temp_html = ``; // 추가할 HTML 문자열 초기화
+
+                    temp_html = `<li>
+                                    <h2>${wish}</h2>
+                                    <h2>${writer}</h2>
+                                    <button onclick="correct_bucket(${num}) " type="button" class="btn btn-outline-primary">수정</button>
+                                    <button onclick="delet_bucket(${num})" type="button" class="btn btn-outline-primary">삭제</button>
+                                </li>`;
+
+                    // '#wish-list' 요소에 아이템을 추가
+                    $('#wish-list').append(temp_html);
+                }
+            }
+        });
+    }
+
+    //버킷리스트 삭제
+    function delet_wish(num){
+        $.ajax({
+            type: "POST",
+            url: "/buk/:item_id",
+            data: {'num_give':num},
+            success: function (response) {
+                alert(response["msg"])
+                window.location.reload()
+            }
+        });
+    }
+
+    // //버킷리스트 조회
+    // function search_wish(search_text){
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "/buk/:item_id",
+    //         data: {'text_give':search_text},
+    //         success: function (response) {
+    //             alert(response["msg"])
+    //             window.location.reload()
+    //         }
+    //     });
+    // }
+
+
+    function correction_wish(num) { //수정 파일로 이동
+        window.location.href = `wish_correction.html?num=${num}`;
+        //url 변경 필요*******
+    }
+
+    function correct_wish() { //생성 파일로 이동
+        window.location.href = 'wish_creat.html';
+        //url 변경 필요*******
+    }
+</script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    nav {
+        background-color: #333;
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin: 0 15px;
+    }
+
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        display: block;
+        transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+        background-color: #575757;
+        border-radius: 4px;
+    }
+
+    nav ul li a.active {
+        background-color: #4CAF50;
+        border-radius: 4px;
+    }
+
+    header {
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 50px 0;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 2.5em;
+    }
+    nav h1{
+        color: white;
+        padding: 0px 200px 0px 0px;
+        padding-right: 20px;
+    }
+
+    .frame {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .center {
+        text-align: center;
+        width: 50%;
+    }
+
+    .center input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .mybox {
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 20px 0px;
+        margin: 10px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        width: 200%;
+        
+    }
+
+    .mybox button {
+        background-color: black;
+        border: 1px solid black;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        margin-left: 10px;
+        cursor: pointer;
+        border-radius: 100px;
+        transition: background-color 0.3s;
+        width: 20%;
+    }
+
+    .mybox button:hover {
+        background-color: white;
+        color: #333;
+        border: 1px solid black;
+    }
+
+    .wish{
+        margin-left: 15px;
+    }
+
+    .search{
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 100px;
+        transition: background-color 0.3s;
+    }
+
+    .center input[type="text"] {
+            width: calc(100% - 120px); 
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px; 
+            box-sizing: border-box; 
+            display: inline-block; 
+            vertical-align: top; 
+            
+        }
+
+        .center button.search {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-left: none; 
+            border-radius: 0 4px 4px 0; 
+            box-sizing: border-box; 
+            display: inline-block;
+            vertical-align: top;
+            cursor: pointer;
+        }
+
+        .center .invisible {
+            display: none;
+        }
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <nav>
+        <title>위키리스트</title>
+        <ul>
+            <h1>WicketList</h1>
+            <li><a href="#">위시 리스트</a></li>
+            <li><a href="">버킷리스트</a></li>
+        </ul>
+    </nav>
+</head>
+<body>
+
+    <!-- <div class="frame">
+        <div class="center">
+            <input type="text" placeholder="search"/>
+            <button class="search">검색하기</button>
+            <div id="recommend" class="invisible">
+            <div class="item"><span class="text">
+            </span></div>
+        </div>
+    </div> -->
+
+    
+
+    <div>
+        <div class="mybox" id="wish">
+            <button>삭제</button>
+            <button>수정</button>
+        </div>
+        <div class="mybox" id="wish-list">
+            <button onclick="">삭제</button>
+            <button>수정</button>
+            <div class="wish">물건이름: </div>
+            <div class="wish">가격</div>
+        </div>
+    </div>
+</body>
+</html>

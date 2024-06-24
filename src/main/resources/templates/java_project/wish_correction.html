@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create</title>
+</head>
+<script>
+    function validateAndSubmit() {
+        const price = document.getElementById('price').value;
+        if (isNaN(price) || !Number.isInteger(parseFloat(price))) {
+            alert("가격을 숫자로 입력해 주세요.");
+        } else {
+            // Process the form submission
+            alert("성공!!");
+        }
+    }
+        function save_wish() {
+        // 사용자가 입력한 버킷 리스트 항목을 가져옵니다.
+        let item = $('#item').val();
+        let price = $('#price').val();
+
+        // AJAX 요청을 설정하여 서버에 데이터를 보냅니다.
+        $.ajax({
+        type: "POST",  // 요청의 타입을 POST로 설정합니다.
+        url: "/buk/",  // 요청을 보낼 서버의 URL을 설정합니다.
+        data: {item: item, price: price},  // 여기서 'bucket', ' writer' 변수의 값을 'bucket_give' 라는 키와 함께 서버에 보냅니다.
+
+
+        success: function(response) {  // 요청이 성공적으로 완료되었을 때 실행할 콜백 함수를 설정합니다.
+        // 서버로부터 받은 메시지를 경고창으로 표시합니다.
+        alert(response["msg"]);
+        // 페이지를 새로고침하여 변경 사항을 반영합니다.
+        window.location.reload();
+    }
+    });
+    }
+
+        // URL에서 num 값을 가져오는 함수
+        function getNumFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('num');
+    }
+        window.onload = function() {
+        // URL에서 num 값을 가져와서 표시
+        const num = getNumFromUrl();
+        if (num) {
+        document.getElementById('numDisplay').innerText = `Num: ${num}`;
+    }
+    }
+
+        // URL에서 num 값을 가져오는 함수
+        function getNumFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('num');
+    }
+        window.onload = function() {
+        // URL에서 num 값을 가져와서 표시
+        const num = getNumFromUrl();
+        if (num) {
+        document.getElementById('numDisplay').innerText = `Num: ${num}`;
+    }
+    }
+
+        function creation_bucket(){
+        let wish = $('#wish').val()
+        $.ajax({
+        type: "PUT",
+        url: "/buk/:item_id",
+        data: {wish_give:wish},
+        success: function (response) {
+        alert(response["msg"])
+        window.location.reload()
+    }
+    });
+    }
+
+
+</script>
+<style>
+    * {
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .content {
+    }
+
+    .writer {
+    }
+
+    input {
+        padding: 10px;
+        margin: 5px 200px;
+        width: 60%;
+        max-width: 400px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 5px 25px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 100px;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: white;
+        color: #333;
+        border: 1px solid black;
+    }
+
+</style>
+<body>
+<div class="item">
+    item: <input type="text" placeholder="물품" id="item">
+</div>
+<div class="price">
+    price: <input type="text" placeholder="가격" id="price">
+</div>
+<button onclick="validateAndSubmit()">작성완료</button>
+</body>
+</html>

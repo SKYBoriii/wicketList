@@ -12,6 +12,8 @@ import skyboriii.wicketList.service.WIshListService;
 @RequestMapping("/wish")
 public class WishController {
 
+
+
     private final WIshListService wishListService;
 
     @Autowired
